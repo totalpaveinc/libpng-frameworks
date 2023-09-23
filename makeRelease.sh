@@ -52,13 +52,15 @@ fi
 
 ((BUILD_INCREMENT++))
 
-echo "$BUILD_INCREMENT" > BUILD_INCREMENT
+echo -n "$BUILD_INCREMENT" > BUILD_INCREMENT
 git add BUILD_INCREMENT
 git commit -m "Build Increment: $BUILD_INCREMENT"
 git push
 
 gh release create $TAG \
     ./build/dist/libpng-android-bin.zip \
+    ./build/dist/libpng-android-bin.zip.sha1 \
     ./build/dist/libpng-ios-bin.zip \
+    ./build/dist/libpng-ios-bin.zip.sha1 \
     --verify-tag --generate-notes
 

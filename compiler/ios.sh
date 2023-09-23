@@ -80,3 +80,8 @@ if [ $? -ne 0 ]; then
     exit $?
 fi
 popd
+
+pushd build/dist/
+CHECKSUM="$(shasum -a 1 libpng-ios-bin.zip  | cut -d ' ' -f 1)"
+echo -n "$CHECKSUM" > libpng-ios-bin.zip.sha1
+popd

@@ -142,3 +142,8 @@ if [ $? -ne 0 ]; then
     exit $?
 fi
 popd
+
+pushd build/dist/
+CHECKSUM="$(shasum -a 1 libpng-android-bin.zip  | cut -d ' ' -f 1)"
+echo -n "$CHECKSUM" > libpng-android-bin.zip.sha1
+popd
