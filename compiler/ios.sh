@@ -16,6 +16,10 @@ cmake \
     -B build/ios/iphoneos \
     ./libpng
 
+if [ $? -ne 0 ]; then
+    exit $?
+fi
+
 cmake \
     -G"Unix Makefiles" \
     -DCMAKE_BUILD_TYPE=Release \
@@ -32,37 +36,47 @@ cmake \
     -B build/ios/iphonesimulator \
     ./libpng
 
+if [ $? -ne 0 ]; then
+    exit $?
+fi
+
 ORIG_CWD=`pwd`
 
 cd build/ios/iphoneos
 make -j
 make install
+if [ $? -ne 0 ]; then
+    exit $?
+fi
 cd $ORIG_CWD/build/ios/iphonesimulator
 make -j
 make install
+if [ $? -ne 0 ]; then
+    exit $?
+fi
 cd $ORIG_CWD
 
-rm -rf build/dist/ios/iphoneos
-rm -rf build/dist/ios/iphonesimulator
+rm -rf build/intermediates/ios/iphoneos
+rm -rf build/intermediates/ios/iphonesimulator
 
-mkdir -p build/dist/ios/iphoneos
-mkdir -p build/dist/ios/iphonesimulator
+mkdir -p build/intermediates/ios/iphoneos
+mkdir -p build/intermediates/ios/iphonesimulator
 
-cp -r build/ios/iphoneos/install/* build/dist/ios/iphoneos/
-cp -r build/ios/iphonesimulator/install/* build/dist/ios/iphonesimulator/
+cp -r build/ios/iphoneos/install/* build/intermediates/ios/iphoneos/
+if [ $? -ne 0 ]; then
+    exit $?
+fi
+cp -r build/ios/iphonesimulator/install/* build/intermediates/ios/iphonesimulator/
+if [ $? -ne 0 ]; then
+    exit $?
+fi
 
-#cp build/ios/iphoneos/libpng.a build/dist/ios/lib/iphoneos/libpng.a
-# cp build/ios/iphoneos/pnglibconf.h build/dist/ios/iphoneos/include/pnglibconf.h
+mkdir -p build/dist
+rm -f build/dist/libpng-ios-bin.zip
 
-# xcodebuild -project ./build/ios/iphoneos/libpng.xcodeproj -scheme png_framework -sdk iphoneos -configuration Release -destination "generic/platform=iOS" clean
-# xcodebuild -project ./build/ios/iphoneos/libpng.xcodeproj -scheme png_framework -sdk iphoneos -configuration Release -destination "generic/platform=iOS" build
-# codesign --sign "$CODE_SIGN_IDENTITY" ./build/ios/iphoneos/Release-iphoneos/png.framework
-
-# xcodebuild -project ./build/ios/iphonesimulator/libpng.xcodeproj -scheme png_framework -sdk iphonesimulator -configuration Release -destination "generic/platform=iOS Simulator" clean
-# xcodebuild -project ./build/ios/iphonesimulator/libpng.xcodeproj -scheme png_framework -sdk iphonesimulator -configuration Release -destination "generic/platform=iOS Simulator" build
-
-# rm -rf ./build/dist/ios/libpng.xcframework
-# xcodebuild -create-xcframework \
-#     -framework ./build/ios/iphoneos/Release-iphoneos/png.framework \
-#     -framework ./build/ios/iphonesimulator/Release-iphonesimulator/png.framework \
-#     -output ./build/dist/ios/libpng.xcframework
+pushd build/intermediates/ios
+zip ../../dist/libpng-ios-bin.zip -r ./
+if [ $? -ne 0 ]; then
+    exit $?
+fi
+popd
