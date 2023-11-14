@@ -5,4 +5,5 @@ source compiler/android.sh
 
 if [ `uname` == "Darwin" ]; then
     source compiler/ios.sh
+    source compiler/mac.sh
 fi

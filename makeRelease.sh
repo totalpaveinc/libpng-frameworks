@@ -1,17 +1,15 @@
 
 # This script is licensed under MIT, Total Pave Inc. 2023.
 
-if ! git rev-parse --is-inside-work-tree >/dev/null 2>&1; then
-    echo "Not in a Git repository."
-    exit 1
-fi
+source "build-tools/public/assertions.sh"
 
-if ! git diff-index --quiet HEAD --; then
-    echo "Git repository is not clean. There are uncommitted changes."
-    exit 1
-fi
+assertGitRepo
+assertCleanRepo
 
 BUILD_INCREMENT=$(cat BUILD_INCREMENT | awk '{$1=$1};1' | tr -d '\n')
+
+./clean.sh
+./build.sh
 
 pushd libpng
 

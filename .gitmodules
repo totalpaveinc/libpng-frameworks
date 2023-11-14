@@ -1,3 +1,6 @@
 [submodule "libpng"]
 	path = libpng
 	url = https://git.code.sf.net/p/libpng/code
+[submodule "build-tools/public"]
+	path = build-tools/public
+	url = https://github.com/totalpaveinc/build-tools-public.git
