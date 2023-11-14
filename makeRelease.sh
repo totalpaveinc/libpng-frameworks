@@ -60,5 +60,7 @@ gh release create $TAG \
     ./build/dist/libpng-android-bin.zip.sha1 \
     ./build/dist/libpng-ios-bin.zip \
     ./build/dist/libpng-ios-bin.zip.sha1 \
+    ./build/dist/libpng-mac-bin.zip \
+    ./build/dist/libpng-mac-bin.zip.sha1 \
     --verify-tag --generate-notes
 
